@@ -17,6 +17,8 @@ class RegisterView(generics.GenericAPIView):
         
         if not serializer.is_valid():
             print("Registration error:", serializer.errors)  # Log validation errors
+            serializer.is_valid(raise_exception=True)
+            self.perform_create(serializer)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
         profile = serializer.save()
