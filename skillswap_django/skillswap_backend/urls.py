@@ -8,6 +8,7 @@ from accounts.views import RegisterView, CustomTokenObtainPairView, profile_view
 from skills.views import CategoryViewSet, SkillViewSet
 from learning_sessions.views import LearningSessionViewSet
 from reviews.views import ReviewViewSet
+from django.http import JsonResponse
 
 router = DefaultRouter()
 router.register(r'categories', CategoryViewSet)
@@ -16,6 +17,7 @@ router.register(r'sessions', LearningSessionViewSet)
 router.register(r'reviews', ReviewViewSet)
 
 urlpatterns = [
+    path("", lambda request: JsonResponse({"message": "SkillSwap API is live!"})),
     path('admin/', admin.site.urls),
     path('api/auth/register/', RegisterView.as_view(), name='register'),
     path('api/auth/login/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
