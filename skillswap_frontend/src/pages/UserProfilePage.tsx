@@ -1,14 +1,11 @@
-import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Star, User, Calendar } from 'lucide-react';
 import ReviewDisplay from '@/components/ReviewDisplay';
-import { useAuth } from '@/contexts/AuthContext';
 
 export default function UserProfilePage() {
   const { userId } = useParams<{ userId: string }>();
-  const { user } = useAuth();
 
   if (!userId) {
     return (
