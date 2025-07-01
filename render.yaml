@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: skillswap-backend
+    env: python
+    buildCommand: pip install -r skillswap_django/requirements.txt
+    startCommand: gunicorn skillswap_backend.wsgi:application
+    plan: free
+    region: frankfurt
+    branch: main
+    repo: https://github.com/alouatiq/skillswap
+    rootDir: skillswap_django
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: skillswap_backend.settings
+      - key: PYTHON_VERSION
+        value: 3.11
+      - key: SECRET_KEY
+        sync: false
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        value: "*"
