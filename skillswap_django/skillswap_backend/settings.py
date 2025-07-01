@@ -76,6 +76,7 @@ DATABASES = {
         conn_health_checks=True,
     )
 }
+print("⚠️ DATABASE URL in use:", os.environ.get("DATABASE_URL"))
 
 # REST Framework & JWT config
 REST_FRAMEWORK = {
