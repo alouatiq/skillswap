@@ -4,6 +4,7 @@ from pathlib import Path
 import dj_database_url
 from datetime import timedelta
 from celery.schedules import crontab
+from corsheaders.defaults import default_headers
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -103,6 +104,15 @@ except json.JSONDecodeError:
         "http://127.0.0.1:5173",
         "https://skillswap-cyan.vercel.app"
     ]
+
+
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'content-type',
+    'authorization',
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
 
 # Email config
 EMAIL_BACKEND = os.environ.get("EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend")
