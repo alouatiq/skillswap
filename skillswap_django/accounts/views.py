@@ -11,21 +11,25 @@ from .serializers import RegisterSerializer, UserProfileSerializer
 class RegisterView(generics.GenericAPIView):
     serializer_class = RegisterSerializer
     permission_classes = [AllowAny]
-    
+
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        profile = serializer.save()
         
+        if not serializer.is_valid():
+            print("Registration error:", serializer.errors)  # Log validation errors
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        profile = serializer.save()
+
         from rest_framework_simplejwt.tokens import RefreshToken
         refresh = RefreshToken.for_user(profile.user)
-        
+
         response_data = {
             'access': str(refresh.access_token),
             'refresh': str(refresh),
             'user': UserProfileSerializer(profile).data
         }
-        
+
         return Response(response_data, status=status.HTTP_201_CREATED)
 
 
@@ -46,11 +50,11 @@ def profile_view(request):
         profile = request.user.userprofile
     except UserProfile.DoesNotExist:
         return Response({'error': 'Profile not found'}, status=status.HTTP_404_NOT_FOUND)
-    
+
     if request.method == 'GET':
         serializer = UserProfileSerializer(profile)
         return Response(serializer.data)
-    
+
     elif request.method == 'PUT':
         serializer = UserProfileSerializer(profile, data=request.data, partial=True)
         if serializer.is_valid():
