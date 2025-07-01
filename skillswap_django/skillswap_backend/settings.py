@@ -95,7 +95,7 @@ SIMPLE_JWT = {
 
 # CORS config
 try:
-    CORS_ALLOWED_ORIGINS = json.loads(os.environ.get("CORS_ALLOWED_ORIGINS", '["http://localhost:3000", "http://localhost:5173", "https://skillswap-cyan.vercel.app"]'))
+    CORS_ALLOWED_ORIGINS = json.loads(os.environ.get("CORS_ALLOWED_ORIGINS", '["http://localhost:3000"]'))
 except json.JSONDecodeError:
     CORS_ALLOWED_ORIGINS = ["http://localhost:3000",
                             "http://localhost:5173",
