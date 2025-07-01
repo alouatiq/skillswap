@@ -95,9 +95,12 @@ SIMPLE_JWT = {
 
 # CORS config
 try:
-    CORS_ALLOWED_ORIGINS = json.loads(os.environ.get("CORS_ALLOWED_ORIGINS", '["http://localhost:3000"]'))
+    CORS_ALLOWED_ORIGINS = json.loads(os.environ.get("CORS_ALLOWED_ORIGINS", '["http://localhost:3000", "http://localhost:5173", "https://skillswap-cyan.vercel.app"]'))
 except json.JSONDecodeError:
-    CORS_ALLOWED_ORIGINS = ["http://localhost:3000"]
+    CORS_ALLOWED_ORIGINS = ["http://localhost:3000",
+                            "http://localhost:5173",
+                            "https://skillswap-cyan.vercel.app"
+                            ]
 
 # Email config
 EMAIL_BACKEND = os.environ.get("EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend")
