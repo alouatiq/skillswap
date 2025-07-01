@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 import os
+import json
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -25,9 +26,11 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "unsafe-key-for-dev")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", "False") == "True"
 
-import json
-ALLOWED_HOSTS = json.loads(os.environ.get("ALLOWED_HOSTS", '["localhost"]'))
-
+try:
+    ALLOWED_HOSTS = json.loads(os.environ.get("ALLOWED_HOSTS", '["localhost"]'))
+except json.JSONDecodeError:
+    ALLOWED_HOSTS = ["localhost"]
+    
 # Application definition
 
 INSTALLED_APPS = [
