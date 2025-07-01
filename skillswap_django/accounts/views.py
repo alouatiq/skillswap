@@ -16,10 +16,8 @@ class RegisterView(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         
         if not serializer.is_valid():
-            return Response({
-                "error": "Validation failed",
-                "details": serializer.errors
-            }, status=status.HTTP_400_BAD_REQUEST)
+            print("Registration error:", serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
         profile = serializer.save()
 
