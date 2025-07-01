@@ -19,7 +19,7 @@ router.register(r'reviews', ReviewViewSet)
 urlpatterns = [
     path("", lambda request: JsonResponse({"message": "SkillSwap API is live!"})),
     path('admin/', admin.site.urls),
-    path('api/auth/register/', RegisterView.as_view(), name='register'),
+    path('auth/register/', RegisterView.as_view(), name='register'),
     path('api/auth/login/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/profile/', profile_view, name='profile'),
