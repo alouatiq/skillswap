@@ -1,28 +1,27 @@
 import os
 import json
 from pathlib import Path
-import dj_database_url
 from datetime import timedelta
 from celery.schedules import crontab
 from corsheaders.defaults import default_headers
+
+import dj_database_url
 from decouple import config
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Build paths
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# Security keys
 SECRET_KEY = os.environ.get("SECRET_KEY", "unsafe-key-for-dev")
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", "False") == "True"
 
-# Allowed hosts setup
+# Allowed hosts
 try:
-    ALLOWED_HOSTS = json.loads(os.environ.get("ALLOWED_HOSTS", '["localhost"]'))
+    ALLOWED_HOSTS = json.loads(os.environ.get("ALLOWED_HOSTS", '["localhost", "127.0.0.1"]'))
 except json.JSONDecodeError:
-    ALLOWED_HOSTS = ["localhost"]
+    ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
-# Application definition
+# Installed apps
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -39,6 +38,7 @@ INSTALLED_APPS = [
     'reviews',
 ]
 
+# Middleware
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -53,6 +53,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'skillswap_backend.urls'
 
+# Templates
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -70,16 +71,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'skillswap_backend.wsgi.application'
 
-# Database
-# DATABASES = {
-#     'default': dj_database_url.config(
-#         default='sqlite:///db.sqlite3',
-#         conn_max_age=600,
-#         conn_health_checks=True,
-#     )
-# }
-
-# Prefer DATABASE_URL from Render or .env
+# Database (Render or local)
 DATABASE_URL = os.environ.get("DATABASE_URL") or config("DATABASE_URL", default="")
 
 if DATABASE_URL:
@@ -87,7 +79,6 @@ if DATABASE_URL:
         'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600)
     }
 else:
-    # fallback to manual config (useful in dev only)
     DATABASES = {
         'default': {
             'ENGINE': config('DB_ENGINE', default='django.db.backends.postgresql'),
@@ -99,9 +90,7 @@ else:
         }
     }
 
-print("⚠️ Using DB:", DATABASES['default'].get('ENGINE', 'unknown'))
-
-# REST Framework & JWT config
+# DRF and JWT
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -117,8 +106,7 @@ SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS': True,
 }
 
-# CORS config
-
+# CORS
 try:
     CORS_ALLOWED_ORIGINS = json.loads(os.environ.get("CORS_ALLOWED_ORIGINS", '["http://localhost:5173", "http://127.0.0.1:5173", "https://skillswap-cyan.vercel.app"]'))
 except json.JSONDecodeError:
@@ -128,16 +116,10 @@ except json.JSONDecodeError:
         "https://skillswap-cyan.vercel.app"
     ]
 
-
-CORS_ALLOW_HEADERS = list(default_headers) + [
-    'content-type',
-    'authorization',
-]
-
+CORS_ALLOW_HEADERS = list(default_headers) + ['content-type', 'authorization']
 CORS_ALLOW_CREDENTIALS = True
 
-
-# Email config
+# Email
 EMAIL_BACKEND = os.environ.get("EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend")
 EMAIL_HOST = os.environ.get("EMAIL_HOST", "")
 EMAIL_PORT = int(os.environ.get("EMAIL_PORT", 587))
@@ -146,14 +128,13 @@ EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
 DEFAULT_FROM_EMAIL = 'noreply@skillswap.com'
 
-# Celery config
+# Celery
 CELERY_BROKER_URL = os.environ.get("REDIS_URL", "redis://localhost:6379/0")
 CELERY_RESULT_BACKEND = os.environ.get("REDIS_URL", "redis://localhost:6379/0")
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
-
 CELERY_BEAT_SCHEDULE = {
     'send-session-reminders': {
         'task': 'learning_sessions.tasks.schedule_session_reminders',
@@ -161,11 +142,10 @@ CELERY_BEAT_SCHEDULE = {
     },
 }
 
-# Media files
+# Media & Static
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# Static files
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
