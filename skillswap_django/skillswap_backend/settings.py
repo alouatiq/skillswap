@@ -79,13 +79,15 @@ WSGI_APPLICATION = 'skillswap_backend.wsgi.application'
 #     )
 # }
 
-# Check if DATABASE_URL is provided (for deployment environments)
-DATABASE_URL = config('DATABASE_URL', default=None)
+# Prefer DATABASE_URL from Render or .env
+DATABASE_URL = os.environ.get("DATABASE_URL") or config("DATABASE_URL", default="")
+
 if DATABASE_URL:
     DATABASES = {
         'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600)
     }
 else:
+    # fallback to manual config (useful in dev only)
     DATABASES = {
         'default': {
             'ENGINE': config('DB_ENGINE', default='django.db.backends.postgresql'),
@@ -97,7 +99,7 @@ else:
         }
     }
 
-print("⚠️ DATABASE URL in use:", os.environ.get("DATABASE_URL"))
+print("⚠️ Using DB:", DATABASES['default'].get('ENGINE', 'unknown'))
 
 # REST Framework & JWT config
 REST_FRAMEWORK = {
