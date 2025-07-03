@@ -40,10 +40,10 @@ export default function SkillsPage() {
     return (
       <div className="text-center mt-20 space-y-4">
         <h2 className="text-2xl font-semibold text-gray-700">
-          Please log in to view available skills.
+          Log in to explore available skills and connect with the right mentors.
         </h2>
         <Link to="/login">
-          <Button className="bg-blue-600 text-white hover:bg-blue-700">
+          <Button className="bg-black text-white hover:bg-gray-800">
             Go to Login
           </Button>
         </Link>
