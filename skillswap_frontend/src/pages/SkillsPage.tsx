@@ -7,12 +7,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Input } from '@/components/ui/input';
 import { Star, Clock, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function SkillsPage() {
   const [categoryFilter, setCategoryFilter] = useState('');
   const [levelFilter, setLevelFilter] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
-  
+
+  const { user, loading } = useAuth();
   const { data: skills = [], isLoading } = useSkills(categoryFilter, levelFilter);
   const { data: categories = [] } = useCategories();
 
@@ -29,6 +31,25 @@ export default function SkillsPage() {
       default: return 'bg-gray-100 text-gray-800';
     }
   };
+
+  if (loading) {
+    return <div className="flex items-center justify-center min-h-64">Loading user info...</div>;
+  }
+
+  if (!user) {
+    return (
+      <div className="text-center mt-20 space-y-4">
+        <h2 className="text-2xl font-semibold text-gray-700">
+          Please log in to view available skills.
+        </h2>
+        <Link to="/login">
+          <Button className="bg-blue-600 text-white hover:bg-blue-700">
+            Go to Login
+          </Button>
+        </Link>
+      </div>
+    );
+  }
 
   if (isLoading) {
     return <div className="flex items-center justify-center min-h-64">Loading skills...</div>;
@@ -49,7 +70,7 @@ export default function SkillsPage() {
           onChange={(e) => setSearchTerm(e.target.value)}
           className="sm:max-w-xs"
         />
-        
+
         <Select value={categoryFilter || undefined} onValueChange={(value) => setCategoryFilter(value || '')}>
           <SelectTrigger className="sm:max-w-xs">
             <SelectValue placeholder="All Categories" />
@@ -91,7 +112,8 @@ export default function SkillsPage() {
       {/* Skills Grid */}
       {filteredSkills.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-gray-500 text-lg">Log in to explore available skills and connect with the right mentors.</p>
+          <p className="text-gray-500 text-lg">No skills found matching your criteria.</p>
+          <p className="text-gray-400">Try adjusting your filters or search terms.</p>
         </div>
       ) : (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -112,7 +134,7 @@ export default function SkillsPage() {
                 <p className="text-sm text-gray-600 line-clamp-3">
                   {skill.description}
                 </p>
-                
+
                 <div className="flex items-center justify-between text-sm text-gray-500">
                   <div className="flex items-center">
                     <Clock className="w-4 h-4 mr-1" />
