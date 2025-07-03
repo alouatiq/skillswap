@@ -43,7 +43,7 @@ export default function SkillsPage() {
           Log in to explore available skills and connect with the right mentors.
         </h2>
         <Link to="/login">
-          <Button className="bg-black text-white hover:bg-gray-800">
+          <Button className="bg-black mt-5 text-white hover:bg-gray-800">
             Go to Login
           </Button>
         </Link>
