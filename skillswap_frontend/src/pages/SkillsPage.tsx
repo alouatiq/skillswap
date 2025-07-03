@@ -91,8 +91,7 @@ export default function SkillsPage() {
       {/* Skills Grid */}
       {filteredSkills.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-gray-500 text-lg">No skills found matching your criteria.</p>
-          <p className="text-gray-400">Try adjusting your filters or search terms.</p>
+          <p className="text-gray-500 text-lg">Log in to explore available skills and connect with the right mentors.</p>
         </div>
       ) : (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
