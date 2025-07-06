@@ -2,6 +2,39 @@
 
 A full-stack web application that allows users to register as mentors or learners, list/browse skills, book 1-on-1 learning sessions, receive email notifications, and leave reviews.
 
+## 📚 Table of Contents
+
+1. [Project Overview](#skillswap---peer-learning-web-application)
+2. [Features](#features)
+
+   * [Core Functionality](#core-functionality)
+   * [Technical Stack](#technical-stack)
+3. [Repository Structure](#-repository-structure)
+4. [Setup Instructions](#setup-instructions)
+
+   * [Prerequisites](#prerequisites)
+   * [Backend Setup (Django)](#backend-setup-django)
+   * [Frontend Setup (React)](#frontend-setup-react)
+   * [Celery Setup (Background Tasks)](#celery-setup-background-tasks)
+5. [Usage](#usage)
+6. [API Endpoints](#api-endpoints)
+
+   * [Authentication](#authentication)
+   * [Skills](#skills)
+   * [Learning Sessions](#learning-sessions)
+   * [User Profiles](#user-profiles)
+7. [Configuration](#configuration)
+
+   * [Environment Variables](#environment-variables)
+8. [Production Deployment](#production-deployment)
+
+   * [Backend (Render/Heroku)](#backend-renderheroku)
+   * [Frontend (Netlify/Vercel)](#frontend-netlifyvercel)
+9. [Development Notes](#development-notes)
+10. [Troubleshooting](#troubleshooting)
+11. [Support](#support)
+
+
 ## Features
 
 ### Core Functionality
@@ -18,6 +51,32 @@ A full-stack web application that allows users to register as mentors or learner
 - **Database**: SQLite (development) / PostgreSQL (production)
 - **Background Tasks**: Celery with Redis
 - **Email**: Console backend (development) / SendGrid (production)
+
+## 📦 Repository Structure
+
+```
+skillswap/
+├── skillswap_django/          # Django Backend
+│   ├── skillswap_backend/     # Main Django project settings
+│   ├── accounts/              # User authentication & profiles
+│   ├── skills/                # Skill management
+│   ├── learning_sessions/     # Session booking & management
+│   ├── reviews/               # Rating & review system
+│   ├── manage.py             # Django management script
+│   └── requirements.txt      # Python dependencies
+├── skillswap_frontend/        # React Frontend
+│   ├── src/                  # Source code
+│   │   ├── components/       # Reusable UI components
+│   │   ├── pages/           # Application pages
+│   │   ├── contexts/        # React contexts
+│   │   ├── hooks/           # Custom hooks
+│   │   └── lib/             # Utilities & API client
+│   ├── public/              # Static assets
+│   ├── package.json         # Node.js dependencies
+│   └── vite.config.ts       # Vite configuration
+├── README.md                # Main project documentation
+└── .gitignore              # Git ignore rules
+```
 
 ## Setup Instructions
 
